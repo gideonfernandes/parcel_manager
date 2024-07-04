@@ -46,7 +46,8 @@ defmodule ParcelManager.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       {:faker, "~> 0.18", only: :test},
-      {:ex_machina, "~> 2.8.0", only: :test}
+      {:ex_machina, "~> 2.8.0", only: :test},
+      {:oban, "~> 2.17"}
     ]
   end
 

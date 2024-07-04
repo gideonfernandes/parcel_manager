@@ -42,3 +42,12 @@ config :phoenix, :json_library, Jason
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
+
+# Configures Oban
+config :parcel_manager, Oban,
+  engine: Oban.Engines.Basic,
+  queues: [emails: 10],
+  repo: ParcelManager.Infrastructure.Persistence.Repo,
+  plugins: [
+    {Oban.Plugins.Lifeline, rescue_after: :timer.minutes(30)}
+  ]

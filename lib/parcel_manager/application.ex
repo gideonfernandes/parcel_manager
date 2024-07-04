@@ -7,6 +7,8 @@ defmodule ParcelManager.Application do
 
   @impl true
   def start(_type, _args) do
+    Oban.Telemetry.attach_default_logger()
+
     children = [
       ParcelManagerWeb.Telemetry,
       ParcelManager.Infrastructure.Persistence.Repo,
@@ -17,7 +19,8 @@ defmodule ParcelManager.Application do
       # Start a worker by calling: ParcelManager.Worker.start_link(arg)
       # {ParcelManager.Worker, arg},
       # Start to serve requests, typically the last entry
-      ParcelManagerWeb.Endpoint
+      ParcelManagerWeb.Endpoint,
+      {Oban, Application.fetch_env!(:parcel_manager, Oban)}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
