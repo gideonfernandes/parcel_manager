@@ -18,12 +18,13 @@ defmodule ParcelManager.DataCase do
 
   using do
     quote do
-      alias ParcelManager.Repo
+      alias ParcelManager.Infrastructure.Persistence.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
       import ParcelManager.DataCase
+      import ParcelManager.Factory
     end
   end
 
@@ -36,7 +37,11 @@ defmodule ParcelManager.DataCase do
   Sets up the sandbox based on the test tags.
   """
   def setup_sandbox(tags) do
-    pid = Ecto.Adapters.SQL.Sandbox.start_owner!(ParcelManager.Repo, shared: not tags[:async])
+    pid =
+      Ecto.Adapters.SQL.Sandbox.start_owner!(ParcelManager.Infrastructure.Persistence.Repo,
+        shared: not tags[:async]
+      )
+
     on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
   end
 
