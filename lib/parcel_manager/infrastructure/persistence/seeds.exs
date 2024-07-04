@@ -9,3 +9,14 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+alias ParcelManager.Infrastructure.Persistence.Repo
+alias ParcelManager.Infrastructure.Persistence.Schemas
+
+if Mix.env() == :dev do
+  for _ <- 1..100 do
+    Repo.insert!(%Schemas.Location{name: Faker.Address.PtBr.city()})
+  end
+
+  IO.puts("Seeds data inserted successfully!")
+end
