@@ -9,7 +9,7 @@ defmodule ParcelManager.Application do
   def start(_type, _args) do
     children = [
       ParcelManagerWeb.Telemetry,
-      ParcelManager.Repo,
+      ParcelManager.Infrastructure.Persistence.Repo,
       {DNSCluster, query: Application.get_env(:parcel_manager, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: ParcelManager.PubSub},
       # Start the Finch HTTP client for sending emails

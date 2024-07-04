@@ -1,7 +1,7 @@
 import Config
 
 # Configure your database
-config :parcel_manager, ParcelManager.Repo,
+config :parcel_manager, ParcelManager.Infrastructure.Persistence.Repo,
   username: "postgres",
   password: "postgres",
   hostname: "localhost",

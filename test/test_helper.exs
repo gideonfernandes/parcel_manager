@@ -1,2 +1,2 @@
 ExUnit.start()
-Ecto.Adapters.SQL.Sandbox.mode(ParcelManager.Repo, :manual)
+Ecto.Adapters.SQL.Sandbox.mode(ParcelManager.Infrastructure.Persistence.Repo, :manual)

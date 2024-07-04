@@ -57,9 +57,22 @@ defmodule ParcelManager.MixProject do
   defp aliases do
     [
       setup: ["deps.get", "ecto.setup"],
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      "ecto.setup": [
+        "ecto.create",
+        "ecto.migrate",
+        "run lib/parcel_manager/infrastructure/persistence/seeds.exs"
+      ],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      run: &run/1
     ]
+  end
+
+  defp run(["priv/repo/seeds.exs" | args]) do
+    Mix.Task.run("run", ["lib/parcel_manager/infrastructure/persistence/seeds.exs"] ++ args)
+  end
+
+  defp run(args) do
+    Mix.Task.run("run", args)
   end
 end

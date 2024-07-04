@@ -8,7 +8,7 @@
 import Config
 
 config :parcel_manager,
-  ecto_repos: [ParcelManager.Repo],
+  ecto_repos: [ParcelManager.Infrastructure.Persistence.Repo],
   generators: [timestamp_type: :utc_datetime]
 
 # Configures the endpoint
