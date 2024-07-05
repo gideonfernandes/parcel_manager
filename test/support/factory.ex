@@ -6,6 +6,7 @@ defmodule ParcelManager.Factory do
 
   use ExMachina.Ecto, repo: ParcelManager.Infrastructure.Persistence.Repo
 
+  alias ParcelManager.Application.Dtos
   alias ParcelManager.Infrastructure.Persistence.Schemas
 
   @spec location_factory :: map()
@@ -39,6 +40,15 @@ defmodule ParcelManager.Factory do
       location_id: location.id,
       parcel: parcel,
       parcel_id: parcel.id
+    }
+  end
+
+  @spec create_parcel_dto_factory :: map()
+  def create_parcel_dto_factory do
+    %Dtos.CreateParcel{
+      description: Faker.Lorem.sentence(),
+      source_id: Faker.UUID.v4(),
+      destination_id: Faker.UUID.v4()
     }
   end
 end
