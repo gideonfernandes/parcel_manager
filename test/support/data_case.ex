@@ -23,6 +23,7 @@ defmodule ParcelManager.DataCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
+      import ExUnit.CaptureLog
       import ParcelManager.DataCase
       import ParcelManager.Factory
     end

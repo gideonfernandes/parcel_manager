@@ -57,6 +57,18 @@ defmodule ParcelManager.Infrastructure.Persistence.Schemas.ParcelTest do
       assert errors_on(changeset) == expected_result
     end
 
+    test "returns an invalid changeset when source & destination are the same" do
+      source = insert(:location)
+      attrs = params_for(:parcel, source_id: source.id, destination_id: source.id)
+
+      expected_result = %{destination_id: ["must be different from source_id"]}
+
+      changeset = Parcel.changeset(%Parcel{}, attrs)
+
+      refute changeset.valid?
+      assert errors_on(changeset) == expected_result
+    end
+
     test "returns a valid changeset when given the required attrs" do
       attrs = params_for(:parcel)
 

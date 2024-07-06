@@ -7,6 +7,8 @@ defmodule ParcelManagerWeb.Router do
 
   scope "/api", ParcelManagerWeb do
     pipe_through :api
+
+    resources "/parcels", ParcelController, only: ~w/create/a
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

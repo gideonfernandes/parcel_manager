@@ -35,13 +35,32 @@ defmodule ParcelManager.Infrastructure.Persistence.Schemas.Parcel do
     timestamps()
   end
 
-  @spec changeset(struct :: t(), attrs :: map()) :: Ecto.Changeset.t()
+  @spec changeset(struct :: t(), attrs :: map()) :: Changeset.t()
   def changeset(struct, attrs) do
     struct
     |> cast(attrs, @required ++ @optional)
     |> validate_required(@required)
     |> validate_inclusion(:state, @valid_states)
+    |> validate_location_distinction()
     |> foreign_key_constraint(:source_id)
     |> foreign_key_constraint(:destination_id)
+  end
+
+  defp validate_location_distinction(%Changeset{valid?: true} = changeset) do
+    Changeset.validate_change(
+      changeset,
+      :destination_id,
+      &do_validate_location_distinction(changeset, &1, &2)
+    )
+  end
+
+  defp validate_location_distinction(changeset), do: changeset
+
+  defp do_validate_location_distinction(changeset, field, value) do
+    if value == Changeset.get_change(changeset, :source_id) do
+      [{field, "must be different from source_id"}]
+    else
+      []
+    end
   end
 end

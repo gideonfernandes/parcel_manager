@@ -28,6 +28,10 @@ defmodule ParcelManagerWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import ParcelManagerWeb.ConnCase
+      import ExUnit.CaptureLog
+
+      alias ParcelManager.Infrastructure.Persistence.Repo
+      alias ParcelManager.Infrastructure.Persistence.Schemas
     end
   end
 
