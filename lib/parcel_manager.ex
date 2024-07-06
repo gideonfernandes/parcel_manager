@@ -19,4 +19,14 @@ defmodule ParcelManager do
       {:error, %Ecto.Changeset{} = changeset} -> {:error, Error.build(:bad_request, changeset)}
     end
   end
+
+  def get_parcel(params) do
+    with {:ok, dto} <- Dtos.GetParcel.build(params),
+         {:ok, parcel} <- UseCases.GetParcel.call(dto) do
+      {:ok, parcel}
+    else
+      {:error, :parcel_not_found} -> {:error, Error.build(:not_found, "parcel not found")}
+      {:error, %Ecto.Changeset{} = changeset} -> {:error, Error.build(:bad_request, changeset)}
+    end
+  end
 end

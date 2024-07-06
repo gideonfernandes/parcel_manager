@@ -24,4 +24,20 @@ defmodule ParcelManagerTest do
       assert {:ok, _} = ParcelManager.create_parcel(params)
     end
   end
+
+  describe "get_parcel/1" do
+    test "returns error struct when undesired result" do
+      params = %{}
+
+      assert {:error, %Error{result: _changeset, status: _status}} =
+               ParcelManager.get_parcel(params)
+    end
+
+    test "builds dto from params & reads parcel data" do
+      parcel = insert(:parcel)
+      params = string_params_for(:get_parcel_dto, parcel_id: parcel.id)
+
+      assert {:ok, _} = ParcelManager.get_parcel(params)
+    end
+  end
 end

@@ -23,6 +23,8 @@ defmodule ParcelManager.Factory do
       id: Faker.UUID.v4(),
       description: Faker.Lorem.sentence(),
       source: source,
+      state: :pending,
+      is_delivered: false,
       source_id: source.id,
       destination: destination,
       destination_id: destination.id
@@ -50,5 +52,10 @@ defmodule ParcelManager.Factory do
       source_id: Faker.UUID.v4(),
       destination_id: Faker.UUID.v4()
     }
+  end
+
+  @spec get_parcel_dto_factory :: map()
+  def get_parcel_dto_factory do
+    %Dtos.GetParcel{parcel_id: Faker.UUID.v4()}
   end
 end

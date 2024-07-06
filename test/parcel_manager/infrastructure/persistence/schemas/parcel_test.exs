@@ -75,7 +75,8 @@ defmodule ParcelManager.Infrastructure.Persistence.Schemas.ParcelTest do
       expected_result = %{
         description: attrs.description,
         destination_id: attrs.destination_id,
-        source_id: attrs.source_id
+        source_id: attrs.source_id,
+        state: attrs.state
       }
 
       changeset = Parcel.changeset(%Parcel{}, attrs)
