@@ -8,7 +8,6 @@ defmodule ParcelManager.Application.Dtos.Macro do
       import Ecto.Changeset
 
       @primary_key false
-      @derive Jason.Encoder
       @before_compile ParcelManager.Application.Dtos.Macro
     end
   end

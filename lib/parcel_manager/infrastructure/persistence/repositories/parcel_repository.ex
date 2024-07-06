@@ -3,7 +3,7 @@ defmodule ParcelManager.Infrastructure.Persistence.Repositories.ParcelRepository
 
   use ParcelManager.Infrastructure.Persistence.Repositories.Macro
 
-  @spec get(parcel_id :: Ecto.UUID.t()) :: Schemas.Parcel.t() | nil
+  @spec get(parcel_id :: Ecto.UUID.t()) :: map() | nil
   def get(parcel_id) do
     Schemas.Parcel
     |> from(as: :parcel, preload: [:source, :destination, transfers: :location])

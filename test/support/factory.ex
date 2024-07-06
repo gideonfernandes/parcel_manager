@@ -58,4 +58,9 @@ defmodule ParcelManager.Factory do
   def get_parcel_dto_factory do
     %Dtos.GetParcel{parcel_id: Faker.UUID.v4()}
   end
+
+  @spec get_location_dto_factory :: map()
+  def get_location_dto_factory do
+    %Dtos.GetLocation{location_id: Faker.UUID.v4()}
+  end
 end

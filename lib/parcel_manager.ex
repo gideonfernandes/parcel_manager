@@ -29,4 +29,14 @@ defmodule ParcelManager do
       {:error, %Ecto.Changeset{} = changeset} -> {:error, Error.build(:bad_request, changeset)}
     end
   end
+
+  def get_location(params) do
+    with {:ok, dto} <- Dtos.GetLocation.build(params),
+         {:ok, location} <- UseCases.GetLocation.call(dto) do
+      {:ok, location}
+    else
+      {:error, :location_not_found} -> {:error, Error.build(:not_found, "location not found")}
+      {:error, %Ecto.Changeset{} = changeset} -> {:error, Error.build(:bad_request, changeset)}
+    end
+  end
 end
