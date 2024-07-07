@@ -3,7 +3,6 @@ defmodule ParcelManager.Application.UseCases.CreateParcelTest do
 
   use ParcelManager.DataCase, async: true
 
-  alias ParcelManager.Application.Dtos.CreateParcel
   alias ParcelManager.Application.UseCases.CreateParcel
   alias ParcelManager.Infrastructure.Persistence.Schemas.Parcel
 

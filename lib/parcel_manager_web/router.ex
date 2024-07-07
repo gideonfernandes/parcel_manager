@@ -8,6 +8,7 @@ defmodule ParcelManagerWeb.Router do
   scope "/api", ParcelManagerWeb do
     pipe_through :api
 
+    post "/parcel/:parcel_id/transfer", ParcelController, :transfer
     resources "/parcel", ParcelController, only: ~w/create show/a
     resources "/location", LocationController, only: ~w/show/a
   end

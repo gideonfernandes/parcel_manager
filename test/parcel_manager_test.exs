@@ -56,4 +56,26 @@ defmodule ParcelManagerTest do
       assert {:ok, _} = ParcelManager.get_location(params)
     end
   end
+
+  describe "transfer_parcel/1" do
+    test "returns error struct when undesired result" do
+      params = %{}
+
+      assert {:error, %Error{result: _changeset, status: _status}} =
+               ParcelManager.transfer_parcel(params)
+    end
+
+    test "builds dto from params & transfers the parcel" do
+      location = insert(:location)
+      parcel = insert(:parcel)
+
+      params =
+        string_params_for(:transfer_parcel_dto,
+          parcel_id: parcel.id,
+          transfer_location_id: location.id
+        )
+
+      assert {:ok, _} = ParcelManager.transfer_parcel(params)
+    end
+  end
 end

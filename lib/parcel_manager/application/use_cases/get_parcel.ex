@@ -9,7 +9,7 @@ defmodule ParcelManager.Application.UseCases.GetParcel do
   def call(%Dtos.GetParcel{} = dto) do
     Logger.info("#{__MODULE__}.call parcel_id=#{dto.parcel_id}")
 
-    case Entity.Parcel.get(dto.parcel_id) do
+    case Entities.Parcel.get(dto.parcel_id) do
       nil -> {:error, :parcel_not_found}
       parcel -> {:ok, parcel}
     end

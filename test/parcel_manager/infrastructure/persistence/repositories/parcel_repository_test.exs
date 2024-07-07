@@ -115,4 +115,24 @@ defmodule ParcelManager.Infrastructure.Persistence.Repositories.ParcelRepository
       assert ParcelRepository.get(parcel.id) == expected_result
     end
   end
+
+  describe "update/2" do
+    test "updates a parcel" do
+      parcel = insert(:parcel)
+      attrs = %{is_delivered: true, state: :delivered}
+
+      refute parcel.is_delivered
+      assert parcel.state == :pending
+      assert {:ok, %Parcel{} = updated_parcel} = ParcelRepository.update(parcel, attrs)
+      assert updated_parcel.is_delivered
+      assert updated_parcel.state == :delivered
+    end
+
+    test "returns error when unable to update" do
+      parcel = insert(:parcel)
+      attrs = %{state: :invalid}
+
+      assert {:error, %Ecto.Changeset{}} = ParcelRepository.update(parcel, attrs)
+    end
+  end
 end

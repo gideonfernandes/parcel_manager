@@ -9,7 +9,7 @@ defmodule ParcelManager.Application.UseCases.GetLocation do
   def call(%Dtos.GetLocation{} = dto) do
     Logger.info("#{__MODULE__}.call location_id=#{dto.location_id}")
 
-    case Entity.Location.get(dto.location_id) do
+    case Entities.Location.get(dto.location_id) do
       nil -> {:error, :location_not_found}
       location -> {:ok, location}
     end

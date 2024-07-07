@@ -12,6 +12,26 @@ defmodule ParcelManagerWeb.ParcelJSONTest do
     assert ParcelJSON.render("created.json", attrs) == expected_result
   end
 
+  test "renders transfer.json" do
+    attrs = %{
+      transfer: %{
+        id: Faker.UUID.v4(),
+        parcel_id: Faker.UUID.v4(),
+        location_id: Faker.UUID.v4()
+      }
+    }
+
+    expected_result = %{
+      data: %{
+        transfer_id: attrs.transfer.id,
+        parcel_id: attrs.transfer.parcel_id,
+        location_id: attrs.transfer.location_id
+      }
+    }
+
+    assert ParcelJSON.render("transfer.json", attrs) == expected_result
+  end
+
   test "renders show.json" do
     location1 = insert(:location)
     location2 = insert(:location)

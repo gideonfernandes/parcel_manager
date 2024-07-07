@@ -11,6 +11,7 @@ defmodule ParcelManager do
   alias ParcelManager.Application.Error
   alias ParcelManager.Application.UseCases
 
+  @spec create_parcel(map()) :: {:ok, map()} | {:error, Error.t()}
   def create_parcel(params) do
     with {:ok, dto} <- Dtos.CreateParcel.build(params),
          {:ok, parcel} <- UseCases.CreateParcel.call(dto) do
@@ -20,6 +21,7 @@ defmodule ParcelManager do
     end
   end
 
+  @spec get_parcel(map()) :: {:ok, map()} | {:error, Error.t()}
   def get_parcel(params) do
     with {:ok, dto} <- Dtos.GetParcel.build(params),
          {:ok, parcel} <- UseCases.GetParcel.call(dto) do
@@ -30,6 +32,30 @@ defmodule ParcelManager do
     end
   end
 
+  @spec transfer_parcel(map()) :: {:ok, map()} | {:error, Error.t()}
+  def transfer_parcel(params) do
+    with {:ok, dto} <- Dtos.TransferParcel.build(params),
+         {:ok, %{transfer_parcel: transfer_parcel}} <- UseCases.TransferParcel.call(dto) do
+      {:ok, transfer_parcel.transfer}
+    else
+      {:error, :parcel_not_found} ->
+        {:error, Error.build(:not_found, "parcel not found")}
+
+      {:error, :location_not_found} ->
+        {:error, Error.build(:not_found, "location not found")}
+
+      {:error, :already_delivered} ->
+        {:error, Error.build(:bad_request, "parcel is already delivered")}
+
+      {:error, :cannot_be_returned_to_previous_locations} ->
+        {:error, Error.build(:bad_request, "parcel cannot be returned to previous locations")}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:error, Error.build(:bad_request, changeset)}
+    end
+  end
+
+  @spec get_location(map()) :: {:ok, map()} | {:error, Error.t()}
   def get_location(params) do
     with {:ok, dto} <- Dtos.GetLocation.build(params),
          {:ok, location} <- UseCases.GetLocation.call(dto) do

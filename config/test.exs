@@ -33,4 +33,4 @@ config :logger, level: :info
 config :phoenix, :plug_init_mode, :runtime
 
 # Configures Oban
-config :parcel_manager, Oban, testing: :inline
+config :parcel_manager, Oban, testing: :manual, peer: Oban.Peers.Global

@@ -7,7 +7,8 @@ defmodule ParcelManager.Application.UseCases.Macro do
 
       alias ParcelManager.Application.Dtos
       alias ParcelManager.Application.Error
-      alias ParcelManager.Domain.Entity
+      alias ParcelManager.Domain.Aggregates
+      alias ParcelManager.Domain.Entities
     end
   end
 end

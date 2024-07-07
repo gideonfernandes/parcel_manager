@@ -34,4 +34,12 @@ defmodule ParcelManager.Infrastructure.Persistence.Repositories.ParcelRepository
     |> Schemas.Parcel.changeset(attrs)
     |> Repo.insert(telemetry_options: [name: :create_parcel])
   end
+
+  @spec update(parcel :: Schemas.Parcel.t(), attrs :: map) ::
+          {:ok, Schemas.Parcel.t()} | {:error, Ecto.Changeset.t()}
+  def update(parcel, attrs) do
+    parcel
+    |> Schemas.Parcel.changeset(attrs)
+    |> Repo.update(telemetry_options: [name: :update_parcel])
+  end
 end

@@ -51,3 +51,7 @@ config :parcel_manager, Oban,
   plugins: [
     {Oban.Plugins.Lifeline, rescue_after: :timer.minutes(30)}
   ]
+
+# Configures ports & adapters
+config :parcel_manager, ParcelManager.Infrastructure.Mailer.Ports.Sender,
+  adapter: ParcelManager.Application.Adapters.Mailer.Swoosh

@@ -18,6 +18,8 @@ defmodule ParcelManager.DataCase do
 
   using do
     quote do
+      use Oban.Testing, repo: ParcelManager.Infrastructure.Persistence.Repo
+
       alias ParcelManager.Infrastructure.Persistence.Repo
 
       import Ecto

@@ -5,6 +5,16 @@ defmodule ParcelManagerWeb.ParcelJSON do
     %{data: %{id: parcel.id}}
   end
 
+  def render("transfer.json", %{transfer: transfer}) do
+    %{
+      data: %{
+        transfer_id: transfer.id,
+        parcel_id: transfer.parcel_id,
+        location_id: transfer.location_id
+      }
+    }
+  end
+
   def render("show.json", %{parcel: parcel}) do
     %{data: parse_parcel(parcel)}
   end

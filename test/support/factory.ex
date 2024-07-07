@@ -63,4 +63,12 @@ defmodule ParcelManager.Factory do
   def get_location_dto_factory do
     %Dtos.GetLocation{location_id: Faker.UUID.v4()}
   end
+
+  @spec transfer_parcel_dto_factory :: map()
+  def transfer_parcel_dto_factory do
+    %Dtos.TransferParcel{
+      parcel_id: Faker.UUID.v4(),
+      transfer_location_id: Faker.UUID.v4()
+    }
+  end
 end

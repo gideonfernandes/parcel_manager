@@ -24,4 +24,13 @@ defmodule ParcelManagerWeb.ParcelController do
       |> render("show.json", parcel: parcel)
     end
   end
+
+  @spec transfer(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def transfer(conn, params) do
+    with {:ok, transfer} <- ParcelManager.transfer_parcel(params) do
+      conn
+      |> put_status(:created)
+      |> render("transfer.json", transfer: transfer)
+    end
+  end
 end

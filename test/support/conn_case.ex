@@ -22,6 +22,7 @@ defmodule ParcelManagerWeb.ConnCase do
       # The default endpoint for testing
       @endpoint ParcelManagerWeb.Endpoint
 
+      use Oban.Testing, repo: ParcelManager.Infrastructure.Persistence.Repo
       use ParcelManagerWeb, :verified_routes
 
       # Import conveniences for testing with connections
