@@ -19,7 +19,7 @@ defmodule ParcelManager.Domain.Entities.Parcel do
   end
 
   defp is_returning?(parcel, transfer_location_id) do
-    transfer_location_id in Enum.map(parcel.transfers, & &1.location_id)
+    transfer_location_id in Enum.map(parcel.transfers, & &1.location_id) ++ [parcel.source_id]
   end
 
   @spec destination_arrived?(parcel :: Schemas.Parcel.t(), location :: Schemas.Location.t()) ::

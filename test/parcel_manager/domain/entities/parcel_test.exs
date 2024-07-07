@@ -71,6 +71,20 @@ defmodule ParcelManager.Domain.Entities.ParcelTest do
       assert Parcel.check_transferability(parcel_with_transfers, location1) == expected_result
     end
 
+    test "returns error when transfer location & source location are the same" do
+      location = insert(:location)
+      insert(:parcel, source_id: location.id, source: location)
+
+      parcel =
+        Schemas.Parcel
+        |> Repo.one!()
+        |> Repo.preload(:transfers)
+
+      expected_result = {:error, :cannot_be_returned_to_previous_locations}
+
+      assert Parcel.check_transferability(parcel, location) == expected_result
+    end
+
     test "returns {:ok, true} when parcel has no previous transfers" do
       location = insert(:location)
       insert(:parcel)
