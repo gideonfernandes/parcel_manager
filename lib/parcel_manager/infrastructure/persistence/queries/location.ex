@@ -5,7 +5,9 @@ defmodule ParcelManager.Infrastructure.Persistence.Queries.Location do
 
   @spec by_id(location_id :: Ecto.UUID.t()) :: Ecto.Query.t()
   def by_id(location_id) do
-    where(Schemas.Location, [l], l.id == ^location_id)
+    Schemas.Location
+    |> from(as: :location)
+    |> by_id(location_id)
   end
 
   @spec by_id(query :: Ecto.Query.t(), location_id :: Ecto.UUID.t()) :: Ecto.Query.t()

@@ -35,7 +35,7 @@ Com toda a configuração de ambiente pronta, podemos então configurar nosso pr
 
 ```bash
 # Baixa o repositório parcel_manager do github
-$ git clone https://gitlab.com/gideonf.dev/parcel_manager
+$ git clone https://gitlab.com/gideonf.dev/parcel_manager.git
 ```
 
 Na sequência execute o comando 'mix deps.get' dentro do diretório do projeto para baixar as dependências:
@@ -185,4 +185,4 @@ Abaixo segue uma listagens de possíveis melhorias que poderiam ser implementada
   - Abrir endtrypoint assíncrono via mensageria para transferência de encomendas em lotes;
   - Dockerizar aplicação;
   - Pipeline de integração contínua com relatório de cobertura de testes e linter;
-  - ...
+  - etc ...
