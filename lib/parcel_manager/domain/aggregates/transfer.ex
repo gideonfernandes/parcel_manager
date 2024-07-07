@@ -14,16 +14,20 @@ defmodule ParcelManager.Domain.Aggregates.Transfer do
     with {:ok, true} <- Entities.Parcel.check_transferability(parcel, location),
          {:ok, transfer} <-
            Entities.Transfer.create(%{parcel_id: parcel.id, location_id: location.id}),
-         {:ok, update_parcel} <- maybe_update_parcel(parcel, location) do
-      {:ok, %{transfer: transfer, update_parcel: update_parcel}}
+         {:ok, result} <- update_parcel(parcel, location) do
+      {:ok, %{transfer: transfer, update_parcel: result}}
     end
   end
 
-  defp maybe_update_parcel(parcel, location) do
+  defp update_parcel(parcel, location) do
     if Entities.Parcel.destination_arrived?(parcel, location) do
-      Entities.Parcel.update(parcel, %{is_delivered: true, state: :delivered})
+      Entities.Parcel.update(parcel, %{
+        is_delivered: true,
+        state: :delivered,
+        current_id: location.id
+      })
     else
-      {:ok, :skipped}
+      Entities.Parcel.update(parcel, %{state: :in_transit, current_id: location.id})
     end
   end
 end

@@ -31,14 +31,14 @@ defmodule ParcelManager.Application.UseCases.TransferParcel do
     Aggregates.Transfer.transfer_parcel(parcel, location)
   end
 
-  defp maybe_send_email(_, %{transfer_parcel: %{update_parcel: :skipped}}) do
-    {:ok, :skipped}
-  end
-
-  defp maybe_send_email(_, _) do
+  defp maybe_send_email(_, %{transfer_parcel: %{update_parcel: %{state: :delivered}}}) do
     %{message: "Parcel is delivered sucessfully!"}
     |> SenderWorker.new()
     |> Oban.insert()
+  end
+
+  defp maybe_send_email(_, _) do
+    {:ok, :skipped}
   end
 
   defp handle_result({:ok, result}), do: {:ok, result}

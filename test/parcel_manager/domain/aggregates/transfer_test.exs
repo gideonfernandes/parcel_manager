@@ -36,7 +36,7 @@ defmodule ParcelManager.Domain.Aggregates.TransferTest do
                Transfer.transfer_parcel(parcel_with_transfers, location2)
     end
 
-    test "transfers parcel to location skipping parcel updating to deliver" do
+    test "transfers parcel to location & updates parcel to in_transit" do
       location1 = insert(:location)
       location2 = insert(:location)
       insert(:parcel, destination_id: location1.id, destination: location1)
@@ -46,8 +46,12 @@ defmodule ParcelManager.Domain.Aggregates.TransferTest do
         |> Repo.one!()
         |> Repo.preload(:transfers)
 
-      assert {:ok, %{transfer: _, update_parcel: :skipped}} =
+      assert {:ok, %{transfer: _, update_parcel: updated_parcel}} =
                Transfer.transfer_parcel(parcel, location2)
+
+      assert updated_parcel.id == parcel.id
+      assert updated_parcel.state == :in_transit
+      assert updated_parcel.current_id == location2.id
     end
 
     test "transfers parcel to location & updates parcel to delivered" do
@@ -63,8 +67,10 @@ defmodule ParcelManager.Domain.Aggregates.TransferTest do
       assert {:ok, %{transfer: _, update_parcel: updated_parcel}} =
                Transfer.transfer_parcel(parcel, location2)
 
+      assert updated_parcel.id == parcel.id
       assert updated_parcel.is_delivered
       assert updated_parcel.state == :delivered
+      assert updated_parcel.current_id == location2.id
     end
   end
 end

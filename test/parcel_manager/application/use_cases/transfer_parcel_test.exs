@@ -70,7 +70,7 @@ defmodule ParcelManager.Application.UseCases.TransferParcelTest do
                "[info] #{TransferParcel}.call parcel_id=#{dto.parcel_id} transfer_location_id=#{dto.transfer_location_id}"
     end
 
-    test "transfers parcel to location skipping parcel updating to deliver" do
+    test "transfers parcel to location & updates parcel to deliver" do
       location1 = insert(:location)
       location2 = insert(:location)
       parcel = insert(:parcel, destination_id: location1.id, destination: location1)
@@ -85,7 +85,7 @@ defmodule ParcelManager.Application.UseCases.TransferParcelTest do
           refute is_nil(result.transfer_parcel.transfer.id)
           assert result.transfer_parcel.transfer.parcel_id == dto.parcel_id
           assert result.transfer_parcel.transfer.location_id == dto.transfer_location_id
-          assert result.transfer_parcel.update_parcel == :skipped
+          assert result.transfer_parcel.update_parcel.state == :in_transit
           assert result.sent_email == :skipped
 
           refute_enqueued(worker: SenderWorker)
