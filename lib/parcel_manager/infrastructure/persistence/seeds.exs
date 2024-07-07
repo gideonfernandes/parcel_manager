@@ -15,7 +15,9 @@ alias ParcelManager.Infrastructure.Persistence.Schemas
 
 if Mix.env() == :dev do
   for _ <- 1..100 do
-    Repo.insert!(%Schemas.Location{name: Faker.Address.PtBr.city()})
+    %{id: location_id} = Repo.insert!(%Schemas.Location{name: Faker.Address.PtBr.city()})
+
+    IO.puts("Location id=#{location_id} inserted!")
   end
 
   IO.puts("Seeds data inserted successfully!")
