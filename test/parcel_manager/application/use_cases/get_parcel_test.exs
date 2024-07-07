@@ -4,15 +4,17 @@ defmodule ParcelManager.Application.UseCases.GetParcelTest do
   use ParcelManager.DataCase, async: true
 
   alias ParcelManager.Application.Dtos.GetParcel
+  alias ParcelManager.Application.Error
   alias ParcelManager.Application.UseCases.GetParcel
 
   describe "call/1" do
     test "returns error when parcel is not found" do
       dto = build(:get_parcel_dto)
+      expected_result = {:error, %Error{result: "parcel not found", status: :not_found}}
 
       log =
         capture_log(fn ->
-          assert {:error, :parcel_not_found} = GetParcel.call(dto)
+          assert GetParcel.call(dto) == expected_result
         end)
 
       assert log =~ "[info] #{GetParcel}.call parcel_id=#{dto.parcel_id}"

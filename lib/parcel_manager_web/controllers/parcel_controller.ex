@@ -27,10 +27,10 @@ defmodule ParcelManagerWeb.ParcelController do
 
   @spec transfer(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def transfer(conn, params) do
-    with {:ok, transfer} <- ParcelManager.transfer_parcel(params) do
+    with {:ok, result} <- ParcelManager.transfer_parcel(params) do
       conn
       |> put_status(:created)
-      |> render("transfer.json", transfer: transfer)
+      |> render("transfer.json", transfer: result.transfer_parcel.transfer)
     end
   end
 end

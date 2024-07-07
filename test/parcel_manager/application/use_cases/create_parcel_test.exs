@@ -3,6 +3,7 @@ defmodule ParcelManager.Application.UseCases.CreateParcelTest do
 
   use ParcelManager.DataCase, async: true
 
+  alias ParcelManager.Application.Error
   alias ParcelManager.Application.UseCases.CreateParcel
   alias ParcelManager.Infrastructure.Persistence.Schemas.Parcel
 
@@ -12,7 +13,8 @@ defmodule ParcelManager.Application.UseCases.CreateParcelTest do
 
       log =
         capture_log(fn ->
-          assert {:error, %Ecto.Changeset{}} = CreateParcel.call(dto)
+          assert {:error, %Error{status: :bad_request, result: %Ecto.Changeset{}}} =
+                   CreateParcel.call(dto)
         end)
 
       assert log =~

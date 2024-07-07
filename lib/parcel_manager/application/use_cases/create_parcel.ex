@@ -3,7 +3,9 @@ defmodule ParcelManager.Application.UseCases.CreateParcel do
 
   use ParcelManager.Application.UseCases.Macro
 
-  @type use_case_output :: {:ok, Schemas.Parcel.t()} | {:error, Ecto.Changeset.t()}
+  alias ParcelManager.Application.Error
+
+  @type use_case_output :: {:ok, Schemas.Parcel.t()} | {:error, Error.t()}
 
   @spec call(dto :: Dtos.CreateParcel.t()) :: use_case_output()
   def call(%Dtos.CreateParcel{} = dto) do
@@ -15,5 +17,12 @@ defmodule ParcelManager.Application.UseCases.CreateParcel do
     |> Map.from_struct()
     |> Map.put(:current_id, dto.source_id)
     |> Entities.Parcel.create()
+    |> handle_result()
+  end
+
+  defp handle_result({:ok, parcel}), do: {:ok, parcel}
+
+  defp handle_result({:error, %Ecto.Changeset{} = changeset}) do
+    {:error, Error.build(:bad_request, changeset)}
   end
 end

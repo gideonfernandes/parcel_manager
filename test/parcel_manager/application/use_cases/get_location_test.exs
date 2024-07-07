@@ -4,15 +4,17 @@ defmodule ParcelManager.Application.UseCases.GetLocationTest do
   use ParcelManager.DataCase, async: true
 
   alias ParcelManager.Application.Dtos.GetLocation
+  alias ParcelManager.Application.Error
   alias ParcelManager.Application.UseCases.GetLocation
 
   describe "call/1" do
     test "returns error when location is not found" do
       dto = build(:get_location_dto)
+      expected_result = {:error, %Error{result: "location not found", status: :not_found}}
 
       log =
         capture_log(fn ->
-          assert {:error, :location_not_found} = GetLocation.call(dto)
+          assert GetLocation.call(dto) == expected_result
         end)
 
       assert log =~ "[info] #{GetLocation}.call location_id=#{dto.location_id}"

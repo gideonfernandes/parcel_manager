@@ -3,16 +3,18 @@ defmodule ParcelManager.Application.UseCases.TransferParcelTest do
 
   use ParcelManager.DataCase, async: true
 
+  alias ParcelManager.Application.Error
   alias ParcelManager.Application.UseCases.TransferParcel
   alias ParcelManager.Infrastructure.Mailer.Workers.SenderWorker
 
   describe "call/1" do
     test "returns error when parcel is not found" do
       dto = build(:transfer_parcel_dto)
+      expected_result = {:error, %Error{result: "parcel not found", status: :not_found}}
 
       log =
         capture_log(fn ->
-          assert {:error, :parcel_not_found} = TransferParcel.call(dto)
+          assert TransferParcel.call(dto) == expected_result
         end)
 
       assert log =~
@@ -22,10 +24,11 @@ defmodule ParcelManager.Application.UseCases.TransferParcelTest do
     test "returns error when location is not found" do
       parcel = insert(:parcel)
       dto = build(:transfer_parcel_dto, parcel_id: parcel.id)
+      expected_result = {:error, %Error{result: "location not found", status: :not_found}}
 
       log =
         capture_log(fn ->
-          assert {:error, :location_not_found} = TransferParcel.call(dto)
+          assert TransferParcel.call(dto) == expected_result
         end)
 
       assert log =~
@@ -54,9 +57,13 @@ defmodule ParcelManager.Application.UseCases.TransferParcelTest do
 
       dto = build(:transfer_parcel_dto, parcel_id: parcel.id, transfer_location_id: location2.id)
 
+      expected_result =
+        {:error,
+         %Error{result: "parcel cannot be returned to previous locations", status: :bad_request}}
+
       log =
         capture_log(fn ->
-          assert {:error, :cannot_be_returned_to_previous_locations} = TransferParcel.call(dto)
+          assert TransferParcel.call(dto) == expected_result
         end)
 
       assert log =~
