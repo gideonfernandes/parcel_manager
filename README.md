@@ -35,7 +35,7 @@ Com toda a configuração de ambiente pronta, podemos então configurar nosso pr
 
 ```bash
 # Baixa o repositório parcel_manager do github
-$ git clone https://.git
+$ git clone https://gitlab.com/gideonf.dev/parcel_manager
 ```
 
 Na sequência execute o comando 'mix deps.get' dentro do diretório do projeto para baixar as dependências:
@@ -62,7 +62,7 @@ config :parcel_manager, ParcelManager.Infrastructure.Persistence.Repo,
 Conforme as configurações acima estiverem corretamente aplicadas, podemos então executar nosso comando de setup do projeto, no qual irá criar um banco de dados, rodar todas as migrations e seeds, deixando o projeto apto a ser utilizado.
 
 ```bash
-# Executa o setup necessário para rodar o projeto
+# Executa o setup do banco de dados e execução do seeds.exs
 $ mix ecto.setup
 ```
 
@@ -173,3 +173,16 @@ Método: `GET`
 #### Informações adicionais
 
 Você poderá importar o arquivo *priv/endpoints.json* contendo a collection para utilizar a API via Postman.
+
+#### Possíveis melhorias
+
+Abaixo segue uma listagens de possíveis melhorias que poderiam ser implementadas no projeto:
+
+  - Adicionar credo como linter;
+  - Feature de envio de email a cada alteração de status de uma encomenda;
+  - Observabilidade utilizando alarmística e gráficos de monitoramento;
+  - Documentar funções e módulos;
+  - Abrir endtrypoint assíncrono via mensageria para transferência de encomendas em lotes;
+  - Dockerizar aplicação;
+  - Pipeline de integração contínua com relatório de cobertura de testes e linter;
+  - ...
