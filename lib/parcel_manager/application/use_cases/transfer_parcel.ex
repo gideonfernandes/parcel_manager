@@ -6,7 +6,7 @@ defmodule ParcelManager.Application.UseCases.TransferParcel do
   alias ParcelManager.Infrastructure.Persistence.Repo
   alias ParcelManager.Infrastructure.Mailer.Workers.SenderWorker
 
-  @type use_case_output :: {:ok, map()} | {:error, Errot.t()}
+  @type use_case_output :: {:ok, map()} | {:error, Error.t()}
 
   @spec call(dto :: Dtos.TransferParcel.t()) :: use_case_output()
   def call(%Dtos.TransferParcel{} = dto) do

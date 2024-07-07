@@ -10,11 +10,8 @@ defmodule ParcelManager.Infrastructure.Persistence.Schemas.Parcel do
   @type t :: %__MODULE__{
           id: Ecto.UUID.t(),
           description: String.t(),
-          source_id: Ecto.UUID.t(),
           source: Schemas.Location.t() | Ecto.Association.NotLoaded.t(),
-          current_id: Ecto.UUID.t(),
           current: Schemas.Location.t() | Ecto.Association.NotLoaded.t(),
-          destination_id: Ecto.UUID.t(),
           destination: Schemas.Location.t() | Ecto.Association.NotLoaded.t(),
           transfers: [Schemas.Transfer.t()] | Ecto.Association.NotLoaded.t(),
           is_delivered: boolean(),
@@ -38,7 +35,7 @@ defmodule ParcelManager.Infrastructure.Persistence.Schemas.Parcel do
     timestamps()
   end
 
-  @spec changeset(struct :: t(), attrs :: map()) :: Changeset.t()
+  @spec changeset(struct :: Ecto.Schema.t(), attrs :: map()) :: Changeset.t()
   def changeset(struct, attrs) do
     struct
     |> cast(attrs, @required ++ @optional)

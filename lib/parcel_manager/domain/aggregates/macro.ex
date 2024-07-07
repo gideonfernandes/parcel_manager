@@ -4,7 +4,7 @@ defmodule ParcelManager.Domain.Aggregates.Macro do
   defmacro __using__(_opts) do
     quote do
       alias ParcelManager.Domain.Entities
-      alias ParcelManager.Infrastructure.Persistence.Schema
+      alias ParcelManager.Infrastructure.Persistence.Schemas
       alias ParcelManager.Infrastructure.Persistence.Repositories
     end
   end

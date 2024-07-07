@@ -3,7 +3,7 @@ defmodule ParcelManager.Infrastructure.Persistence.Repositories.TransferReposito
 
   use ParcelManager.Infrastructure.Persistence.Repositories.Macro
 
-  @spec create(attrs :: map) :: {:ok, Schemas.Transfer.t()} | {:error, Ecto.Changeset.t()}
+  @spec create(attrs :: map()) :: {:ok, Schemas.Transfer.t()} | {:error, Ecto.Changeset.t()}
   def create(attrs) do
     %Schemas.Transfer{}
     |> Schemas.Transfer.changeset(attrs)

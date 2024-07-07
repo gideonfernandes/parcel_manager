@@ -28,7 +28,7 @@ defmodule ParcelManager do
     end
   end
 
-  @spec transfer_parcel(map()) :: {:ok, Schemas.Transfer.t()} | {:error, Error.t()}
+  @spec transfer_parcel(map()) :: {:ok, map()} | {:error, Error.t()}
   def transfer_parcel(params) do
     case Dtos.TransferParcel.build(params) do
       {:ok, dto} -> UseCases.TransferParcel.call(dto)

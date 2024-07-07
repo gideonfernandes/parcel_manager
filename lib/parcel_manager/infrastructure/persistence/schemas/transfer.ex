@@ -22,7 +22,7 @@ defmodule ParcelManager.Infrastructure.Persistence.Schemas.Transfer do
     timestamps(updated_at: false)
   end
 
-  @spec changeset(struct :: t(), attrs :: map()) :: Ecto.Changeset.t()
+  @spec changeset(struct :: Ecto.Schema.t(), attrs :: map()) :: Ecto.Changeset.t()
   def changeset(struct, attrs) do
     struct
     |> cast(attrs, @required)

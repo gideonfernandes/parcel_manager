@@ -17,7 +17,7 @@ defmodule ParcelManager.Application.Dtos.Macro do
 
     quote generated: true do
       if unquote(should_generate_build?) do
-        @spec build(attrs :: map()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
+        @spec build(attrs :: map()) :: {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
         def build(attrs) do
           %__MODULE__{}
           |> changeset(attrs)

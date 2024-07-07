@@ -30,14 +30,14 @@ defmodule ParcelManager.Infrastructure.Persistence.Repositories.ParcelRepository
     |> Repo.one(telemetry_options: [name: :get_parcel])
   end
 
-  @spec create(attrs :: map) :: {:ok, Schemas.Parcel.t()} | {:error, Ecto.Changeset.t()}
+  @spec create(attrs :: map()) :: {:ok, Schemas.Parcel.t()} | {:error, Ecto.Changeset.t()}
   def create(attrs) do
     %Schemas.Parcel{}
     |> Schemas.Parcel.changeset(attrs)
     |> Repo.insert(telemetry_options: [name: :create_parcel])
   end
 
-  @spec update(parcel :: Schemas.Parcel.t(), attrs :: map) ::
+  @spec update(parcel :: Schemas.Parcel.t(), attrs :: map()) ::
           {:ok, Schemas.Parcel.t()} | {:error, Ecto.Changeset.t()}
   def update(parcel, attrs) do
     parcel

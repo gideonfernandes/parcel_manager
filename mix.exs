@@ -47,7 +47,8 @@ defmodule ParcelManager.MixProject do
       {:bandit, "~> 1.5"},
       {:faker, "~> 0.18", only: [:test, :dev]},
       {:ex_machina, "~> 2.8.0", only: :test},
-      {:oban, "~> 2.17"}
+      {:oban, "~> 2.17"},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false}
     ]
   end
 

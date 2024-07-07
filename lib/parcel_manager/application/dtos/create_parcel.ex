@@ -18,6 +18,7 @@ defmodule ParcelManager.Application.Dtos.CreateParcel do
     field(:destination_id, Ecto.UUID)
   end
 
+  @spec changeset(struct :: Ecto.Schema.t(), attrs :: map()) :: Ecto.Changeset.t()
   def changeset(struct, attrs) do
     struct
     |> cast(attrs, @required ++ @optional)
