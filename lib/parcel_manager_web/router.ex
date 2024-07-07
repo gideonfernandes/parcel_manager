@@ -9,8 +9,9 @@ defmodule ParcelManagerWeb.Router do
     pipe_through :api
 
     post "/parcel/:parcel_id/transfer", ParcelController, :transfer
-    resources "/parcel", ParcelController, only: ~w/create show/a
-    resources "/location", LocationController, only: ~w/show/a
+    post "/parcel", ParcelController, :create
+    get "/parcel/:parcel_id", ParcelController, :show
+    get "/location/:location_id", LocationController, :show
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

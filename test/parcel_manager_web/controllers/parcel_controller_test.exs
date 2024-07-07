@@ -117,14 +117,13 @@ defmodule ParcelManagerWeb.ParcelControllerTest do
 
   describe "show/2" do
     test "returns traversed changesed errors when missing params", %{conn: conn} do
-      params = %{}
       expected_response = %{"reason" => %{"parcel_id" => ["can't be blank"]}}
 
       log =
         capture_log(fn ->
           response =
             conn
-            |> get(~p"/api/parcel/:parcel_id", params)
+            |> get(~p"/api/parcel/ ")
             |> json_response(:bad_request)
 
           assert response == expected_response
@@ -160,7 +159,7 @@ defmodule ParcelManagerWeb.ParcelControllerTest do
         capture_log(fn ->
           response =
             conn
-            |> get(~p"/api/parcel/:parcel_id", params)
+            |> get(~p"/api/parcel/#{params["parcel_id"]}")
             |> json_response(:not_found)
 
           assert response == expected_response
@@ -227,7 +226,7 @@ defmodule ParcelManagerWeb.ParcelControllerTest do
         capture_log(fn ->
           response =
             conn
-            |> get(~p"/api/parcel/:parcel_id", params)
+            |> get(~p"/api/parcel/#{params["parcel_id"]}")
             |> json_response(:ok)
 
           assert response == expected_response
