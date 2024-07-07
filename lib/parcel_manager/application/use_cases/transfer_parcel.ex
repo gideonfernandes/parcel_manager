@@ -12,6 +12,7 @@ defmodule ParcelManager.Application.UseCases.TransferParcel do
              :parcel_not_found
              | :location_not_found
              | :already_delivered
+             | :cannot_be_transferred_to_current_location
              | :cannot_be_returned_to_previous_locations}
 
   @spec call(dto :: Dtos.TransferParcel.t()) :: use_case_output()

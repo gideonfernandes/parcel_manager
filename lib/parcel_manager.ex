@@ -47,6 +47,9 @@ defmodule ParcelManager do
       {:error, :already_delivered} ->
         {:error, Error.build(:bad_request, "parcel is already delivered")}
 
+      {:error, :cannot_be_transferred_to_current_location} ->
+        {:error, Error.build(:bad_request, "parcel cannot be transferred to current location")}
+
       {:error, :cannot_be_returned_to_previous_locations} ->
         {:error, Error.build(:bad_request, "parcel cannot be returned to previous locations")}
 

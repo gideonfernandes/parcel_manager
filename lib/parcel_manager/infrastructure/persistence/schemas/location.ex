@@ -10,6 +10,7 @@ defmodule ParcelManager.Infrastructure.Persistence.Schemas.Location do
           id: Ecto.UUID.t(),
           name: String.t(),
           source_parcels: [Schemas.Parcel.t()] | Ecto.Association.NotLoaded.t(),
+          current_parcels: [Schemas.Parcel.t()] | Ecto.Association.NotLoaded.t(),
           destination_parcels: [Schemas.Parcel.t()] | Ecto.Association.NotLoaded.t(),
           transfers: [Schemas.Transfer.t()] | Ecto.Association.NotLoaded.t(),
           inserted_at: NaiveDateTime.t(),
@@ -19,16 +20,9 @@ defmodule ParcelManager.Infrastructure.Persistence.Schemas.Location do
   schema "locations" do
     field(:name, :string)
 
-    has_many(:source_parcels, Schemas.Parcel,
-      foreign_key: :source_id,
-      where: [state: :pending]
-    )
-
-    has_many(:destination_parcels, Schemas.Parcel,
-      foreign_key: :destination_id,
-      where: [state: :delivered]
-    )
-
+    has_many(:source_parcels, Schemas.Parcel, foreign_key: :source_id)
+    has_many(:current_parcels, Schemas.Parcel, foreign_key: :current_id)
+    has_many(:destination_parcels, Schemas.Parcel, foreign_key: :destination_id)
     has_many(:transfers, Schemas.Transfer, foreign_key: :location_id)
 
     timestamps()

@@ -27,8 +27,7 @@ defmodule ParcelManager.Application.UseCases.GetLocationTest do
          %{
            id: location.id,
            name: location.name,
-           source_parcels: [],
-           destination_parcels: []
+           current_parcels: []
          }}
 
       log =

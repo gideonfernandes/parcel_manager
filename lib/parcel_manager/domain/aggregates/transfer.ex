@@ -4,7 +4,10 @@ defmodule ParcelManager.Domain.Aggregates.Transfer do
   use ParcelManager.Domain.Aggregates.Macro
 
   @spec transfer_parcel(parcel :: Schemas.Parcel.t(), location :: Schemas.Location.t()) ::
-          {:error, :already_delivered | :cannot_be_returned_to_previous_locations}
+          {:error,
+           :already_delivered
+           | :cannot_be_transferred_to_current_location
+           | :cannot_be_returned_to_previous_locations}
   def transfer_parcel(parcel, location) do
     with {:ok, true} <- Entities.Parcel.check_transferability(parcel, location),
          {:ok, transfer} <-

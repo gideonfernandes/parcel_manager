@@ -7,21 +7,22 @@ defmodule ParcelManager.Infrastructure.Persistence.Repositories.ParcelRepository
   alias ParcelManager.Infrastructure.Persistence.Schemas.Parcel
 
   describe "create/1" do
-    test "creates a parcel" do
-      source = insert(:location)
-      destination = insert(:location)
-      attrs = params_for(:parcel, source_id: source.id, destination_id: destination.id)
-
-      assert {:ok, %Parcel{} = parcel} = ParcelRepository.create(attrs)
-      assert parcel.description == attrs.description
-      assert parcel.source_id == attrs.source_id
-      assert parcel.destination_id == attrs.destination_id
-    end
-
     test "returns error when unable to insert" do
       attrs = %{}
 
       assert {:error, %Ecto.Changeset{}} = ParcelRepository.create(attrs)
+    end
+
+    test "creates a parcel" do
+      source = insert(:location)
+      destination = insert(:location)
+      attrs = params_for(:parcel, source: source, current: source, destination: destination)
+
+      assert {:ok, %Parcel{} = parcel} = ParcelRepository.create(attrs)
+      assert parcel.description == attrs.description
+      assert parcel.source_id == attrs.source_id
+      assert parcel.current_id == attrs.source_id
+      assert parcel.destination_id == attrs.destination_id
     end
   end
 
@@ -122,7 +123,7 @@ defmodule ParcelManager.Infrastructure.Persistence.Repositories.ParcelRepository
       attrs = %{is_delivered: true, state: :delivered}
 
       refute parcel.is_delivered
-      assert parcel.state == :pending
+      assert parcel.state == :in_transit
       assert {:ok, %Parcel{} = updated_parcel} = ParcelRepository.update(parcel, attrs)
       assert updated_parcel.is_delivered
       assert updated_parcel.state == :delivered

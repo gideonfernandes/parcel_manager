@@ -13,6 +13,7 @@ defmodule ParcelManager.Application.UseCases.CreateParcel do
 
     dto
     |> Map.from_struct()
+    |> Map.put(:current_id, dto.source_id)
     |> Entities.Parcel.create()
   end
 end

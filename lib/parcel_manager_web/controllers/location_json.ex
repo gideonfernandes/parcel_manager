@@ -9,7 +9,7 @@ defmodule ParcelManagerWeb.LocationJSON do
     %{
       id: location.id,
       name: location.name,
-      parcels: location.source_parcels ++ location.destination_parcels
+      parcels: location.current_parcels
     }
   end
 end

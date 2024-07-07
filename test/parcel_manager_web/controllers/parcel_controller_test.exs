@@ -422,7 +422,7 @@ defmodule ParcelManagerWeb.ParcelControllerTest do
                    "data" => %{
                      "location_id" => ^location3_id,
                      "parcel_id" => ^parcel_id,
-                     "transfer_id" => transfer_id
+                     "transfer_id" => _transfer_id
                    }
                  } = response
 

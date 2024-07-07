@@ -27,12 +27,10 @@ defmodule ParcelManager.Infrastructure.Persistence.Schemas.TransferTest do
     end
 
     test "returns a valid changeset when given all attrs" do
-      attrs = params_for(:transfer)
-
-      expected_result = %{
-        location_id: attrs.location_id,
-        parcel_id: attrs.parcel_id
-      }
+      location = insert(:location)
+      parcel = insert(:parcel)
+      attrs = params_for(:transfer, location: location, parcel: parcel)
+      expected_result = %{location_id: attrs.location_id, parcel_id: attrs.parcel_id}
 
       changeset = Transfer.changeset(%Transfer{}, attrs)
 

@@ -7,15 +7,8 @@ defmodule ParcelManagerWeb.LocationJSONTest do
 
   test "renders show.json" do
     location = insert(:location)
-
-    parcel =
-      insert(:parcel,
-        source_id: location.id,
-        source: location
-      )
-
+    parcel = insert(:parcel, current: location)
     {:ok, loaded_location} = ParcelManager.get_location(%{"location_id" => location.id})
-
     attrs = %{location: loaded_location}
 
     expected_result = %{
@@ -29,7 +22,7 @@ defmodule ParcelManagerWeb.LocationJSONTest do
             is_delivered: parcel.is_delivered,
             source_id: parcel.source.id,
             destination_id: parcel.destination.id,
-            source: %{id: location.id, name: location.name},
+            source: %{id: parcel.source.id, name: parcel.source.name},
             destination: %{id: parcel.destination.id, name: parcel.destination.name}
           }
         ]

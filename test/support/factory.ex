@@ -17,17 +17,17 @@ defmodule ParcelManager.Factory do
   @spec parcel_factory :: map()
   def parcel_factory do
     source = build(:location)
+    current = build(:location)
     destination = build(:location)
 
     %Schemas.Parcel{
       id: Faker.UUID.v4(),
       description: Faker.Lorem.sentence(),
       source: source,
-      state: :pending,
+      state: :in_transit,
+      current: current,
       is_delivered: false,
-      source_id: source.id,
-      destination: destination,
-      destination_id: destination.id
+      destination: destination
     }
   end
 
@@ -39,9 +39,7 @@ defmodule ParcelManager.Factory do
     %Schemas.Transfer{
       id: Faker.UUID.v4(),
       location: location,
-      location_id: location.id,
-      parcel: parcel,
-      parcel_id: parcel.id
+      parcel: parcel
     }
   end
 

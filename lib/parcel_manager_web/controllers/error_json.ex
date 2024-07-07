@@ -1,6 +1,7 @@
 defmodule ParcelManagerWeb.ErrorJSON do
   @moduledoc false
 
+  @spec render(String.t(), map()) :: map()
   def render("error.json", %{result: %Ecto.Changeset{} = changeset}) do
     %{reason: translate_errors(changeset)}
   end
