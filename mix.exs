@@ -48,7 +48,8 @@ defmodule ParcelManager.MixProject do
       {:faker, "~> 0.18", only: [:test, :dev]},
       {:ex_machina, "~> 2.8.0", only: :test},
       {:oban, "~> 2.17"},
-      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false}
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
     ]
   end
 
@@ -68,6 +69,7 @@ defmodule ParcelManager.MixProject do
       ],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      "code.quality": ["format --check-formatted", "credo --strict", "dialyzer"],
       run: &run/1
     ]
   end

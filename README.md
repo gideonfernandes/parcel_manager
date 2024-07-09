@@ -178,7 +178,6 @@ Você poderá importar o arquivo *priv/endpoints.json* contendo a collection par
 
 Abaixo segue uma listagens de possíveis melhorias que poderiam ser implementadas no projeto:
 
-  - Adicionar credo como linter;
   - Feature de envio de email a cada alteração de status de uma encomenda;
   - Observabilidade utilizando alarmística e gráficos de monitoramento;
   - Documentar funções e módulos;

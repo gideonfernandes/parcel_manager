@@ -3,8 +3,8 @@ defmodule ParcelManager.Application.UseCases.TransferParcel do
 
   use ParcelManager.Application.UseCases.Macro
 
-  alias ParcelManager.Infrastructure.Persistence.Repo
   alias ParcelManager.Infrastructure.Mailer.Workers.SenderWorker
+  alias ParcelManager.Infrastructure.Persistence.Repo
 
   @type use_case_output :: {:ok, map()} | {:error, Error.t()}
 

@@ -18,17 +18,17 @@ defmodule ParcelManager.Domain.Entities.Parcel do
   def check_transferability(%Schemas.Parcel{} = parcel, %Schemas.Location{id: location_id}) do
     cond do
       parcel.state == :delivered and parcel.is_delivered -> {:error, :already_delivered}
-      is_current?(parcel, location_id) -> {:error, :cannot_be_transferred_to_current_location}
-      is_returning?(parcel, location_id) -> {:error, :cannot_be_returned_to_previous_locations}
+      current?(parcel, location_id) -> {:error, :cannot_be_transferred_to_current_location}
+      returning?(parcel, location_id) -> {:error, :cannot_be_returned_to_previous_locations}
       true -> {:ok, true}
     end
   end
 
-  defp is_current?(parcel, transfer_location_id) do
+  defp current?(parcel, transfer_location_id) do
     transfer_location_id == parcel.current_id
   end
 
-  defp is_returning?(parcel, transfer_location_id) do
+  defp returning?(parcel, transfer_location_id) do
     transfer_location_id in (Enum.map(parcel.transfers, & &1.location_id) ++ [parcel.source_id])
   end
 
