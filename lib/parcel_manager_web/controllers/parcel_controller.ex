@@ -3,11 +3,12 @@ defmodule ParcelManagerWeb.ParcelController do
 
   use ParcelManagerWeb, :controller
 
+  alias ParcelManager.Application.Error
   alias ParcelManagerWeb.FallbackController
 
   action_fallback FallbackController
 
-  @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t() | {:error, Error.t()}
   def create(conn, params) do
     with {:ok, parcel} <- ParcelManager.create_parcel(params) do
       conn
@@ -16,7 +17,7 @@ defmodule ParcelManagerWeb.ParcelController do
     end
   end
 
-  @spec show(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  @spec show(Plug.Conn.t(), map()) :: Plug.Conn.t() | {:error, Error.t()}
   def show(conn, params) do
     with {:ok, parcel} <- ParcelManager.get_parcel(params) do
       conn
@@ -25,7 +26,7 @@ defmodule ParcelManagerWeb.ParcelController do
     end
   end
 
-  @spec transfer(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  @spec transfer(Plug.Conn.t(), map()) :: Plug.Conn.t() | {:error, Error.t()}
   def transfer(conn, params) do
     with {:ok, result} <- ParcelManager.transfer_parcel(params) do
       conn

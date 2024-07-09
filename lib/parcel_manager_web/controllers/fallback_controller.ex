@@ -6,7 +6,7 @@ defmodule ParcelManagerWeb.FallbackController do
   alias ParcelManager.Application.Error
   alias ParcelManagerWeb.ErrorJSON
 
-  @spec call(Plug.Conn.t(), map()) :: {:error, Error.t()}
+  @spec call(conn :: Plug.Conn.t(), error :: {:error, Error.t()}) :: Plug.Conn.t()
   def call(conn, {:error, %Error{status: status, result: result}}) do
     conn
     |> put_status(status)
