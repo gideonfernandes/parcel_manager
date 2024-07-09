@@ -14,9 +14,9 @@ defmodule ParcelManager.Application.Dtos.GetLocation do
     field(:location_id, Ecto.UUID)
   end
 
-  @spec changeset(struct :: Ecto.Schema.t(), attrs :: map()) :: Ecto.Changeset.t()
-  def changeset(struct, attrs) do
-    struct
+  @spec changeset(schema :: Ecto.Schema.t(), attrs :: map()) :: Ecto.Changeset.t()
+  def changeset(schema, attrs) do
+    schema
     |> cast(attrs, @required ++ @optional)
     |> validate_required(@required)
   end

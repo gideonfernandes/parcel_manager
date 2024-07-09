@@ -35,9 +35,9 @@ defmodule ParcelManager.Infrastructure.Persistence.Schemas.Parcel do
     timestamps()
   end
 
-  @spec changeset(struct :: Ecto.Schema.t(), attrs :: map()) :: Changeset.t()
-  def changeset(struct, attrs) do
-    struct
+  @spec changeset(schema :: Ecto.Schema.t(), attrs :: map()) :: Changeset.t()
+  def changeset(schema, attrs) do
+    schema
     |> cast(attrs, @required ++ @optional)
     |> validate_required(@required)
     |> validate_inclusion(:state, @valid_states)

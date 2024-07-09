@@ -22,9 +22,9 @@ defmodule ParcelManager.Infrastructure.Persistence.Schemas.Transfer do
     timestamps(updated_at: false)
   end
 
-  @spec changeset(struct :: Ecto.Schema.t(), attrs :: map()) :: Ecto.Changeset.t()
-  def changeset(struct, attrs) do
-    struct
+  @spec changeset(schema :: Ecto.Schema.t(), attrs :: map()) :: Ecto.Changeset.t()
+  def changeset(schema, attrs) do
+    schema
     |> cast(attrs, @required)
     |> validate_required(@required ++ @optional)
     |> foreign_key_constraint(:parcel_id)
