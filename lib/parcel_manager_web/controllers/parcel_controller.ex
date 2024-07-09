@@ -34,4 +34,13 @@ defmodule ParcelManagerWeb.ParcelController do
       |> render("transfer.json", transfer: result.transfer_parcel.transfer)
     end
   end
+
+  @spec cancel(Plug.Conn.t(), map()) :: Plug.Conn.t() | {:error, Error.t()}
+  def cancel(conn, params) do
+    with {:ok, result} <- ParcelManager.cancel_parcel(params) do
+      conn
+      |> put_status(:ok)
+      |> render("cancel.json", canceled_parcel: result.cancel_parcel)
+    end
+  end
 end

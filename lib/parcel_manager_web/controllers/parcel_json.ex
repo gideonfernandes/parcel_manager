@@ -1,6 +1,7 @@
 defmodule ParcelManagerWeb.ParcelJSON do
   @moduledoc false
 
+  @spec render(String.t(), map()) :: map()
   def render("created.json", %{parcel: parcel}) do
     %{data: %{id: parcel.id}}
   end
@@ -13,6 +14,10 @@ defmodule ParcelManagerWeb.ParcelJSON do
         location_id: transfer.location_id
       }
     }
+  end
+
+  def render("cancel.json", %{canceled_parcel: canceled_parcel}) do
+    %{data: %{id: canceled_parcel.id}}
   end
 
   def render("show.json", %{parcel: parcel}) do

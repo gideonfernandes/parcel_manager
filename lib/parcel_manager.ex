@@ -12,6 +12,14 @@ defmodule ParcelManager do
   alias ParcelManager.Application.UseCases
   alias ParcelManager.Infrastructure.Persistence.Schemas
 
+  @spec get_location(map()) :: {:ok, map()} | {:error, Error.t()}
+  def get_location(params) do
+    case Dtos.GetLocation.build(params) do
+      {:ok, dto} -> UseCases.GetLocation.call(dto)
+      {:error, %Ecto.Changeset{} = changeset} -> {:error, Error.build(:bad_request, changeset)}
+    end
+  end
+
   @spec create_parcel(map()) :: {:ok, Schemas.Parcel.t()} | {:error, Error.t()}
   def create_parcel(params) do
     case Dtos.CreateParcel.build(params) do
@@ -36,10 +44,10 @@ defmodule ParcelManager do
     end
   end
 
-  @spec get_location(map()) :: {:ok, map()} | {:error, Error.t()}
-  def get_location(params) do
-    case Dtos.GetLocation.build(params) do
-      {:ok, dto} -> UseCases.GetLocation.call(dto)
+  @spec cancel_parcel(map()) :: {:ok, map()} | {:error, Error.t()}
+  def cancel_parcel(params) do
+    case Dtos.CancelParcel.build(params) do
+      {:ok, dto} -> UseCases.CancelParcel.call(dto)
       {:error, %Ecto.Changeset{} = changeset} -> {:error, Error.build(:bad_request, changeset)}
     end
   end

@@ -69,7 +69,7 @@ defmodule ParcelManager.Application.UseCases.CancelParcelTest do
       assert log =~ "[info] #{CancelParcel}.call parcel_id=#{dto.parcel_id}"
     end
 
-    test "cancels parcel & persists reason" do
+    test "cancels parcel, persists reason & send cancellation email" do
       parcel = insert(:parcel, state: :pending)
       dto = build(:cancel_parcel_dto, parcel_id: parcel.id)
 

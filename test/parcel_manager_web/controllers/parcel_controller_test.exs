@@ -436,4 +436,147 @@ defmodule ParcelManagerWeb.ParcelControllerTest do
       assert log =~ "[info] Sent 201"
     end
   end
+
+  describe "cancel/2" do
+    test "returns traversed changesed errors when missing params", %{conn: conn} do
+      params = %{}
+
+      expected_response = %{
+        "reason" => %{"parcel_id" => ["can't be blank"], "reason" => ["can't be blank"]}
+      }
+
+      log =
+        capture_log(fn ->
+          response =
+            conn
+            |> patch(~p"/api/parcel/ /cancel", params)
+            |> json_response(:bad_request)
+
+          assert response == expected_response
+        end)
+
+      assert log =~ "[info] PATCH /api/parcel"
+      assert log =~ "[info] Sent 400"
+    end
+
+    test "returns traversed changesed errors when invalid type params", %{conn: conn} do
+      params = %{"reason" => {}}
+
+      expected_response = %{
+        "reason" => %{"parcel_id" => ["is invalid"], "reason" => ["is invalid"]}
+      }
+
+      log =
+        capture_log(fn ->
+          response =
+            conn
+            |> patch(~p"/api/parcel/{}/cancel", params)
+            |> json_response(:bad_request)
+
+          assert response == expected_response
+        end)
+
+      assert log =~ "[info] PATCH /api/parcel"
+      assert log =~ "[info] Sent 400"
+    end
+
+    test "returns error when parcel is not found", %{conn: conn} do
+      params = string_params_for(:cancel_parcel_dto)
+      expected_response = %{"reason" => "parcel not found"}
+
+      log =
+        capture_log(fn ->
+          response =
+            conn
+            |> patch(~p"/api/parcel/#{params["parcel_id"]}/cancel", params)
+            |> json_response(:not_found)
+
+          assert response == expected_response
+        end)
+
+      assert log =~ "[info] PATCH /api/parcel"
+      assert log =~ "[info] Sent 404"
+    end
+
+    test "returns error when parcel is already canceled", %{conn: conn} do
+      parcel = insert(:parcel, state: :canceled)
+      params = string_params_for(:cancel_parcel_dto, parcel_id: parcel.id)
+      expected_response = %{"reason" => "parcel is already canceled"}
+
+      log =
+        capture_log(fn ->
+          response =
+            conn
+            |> patch(~p"/api/parcel/#{params["parcel_id"]}/cancel", params)
+            |> json_response(:bad_request)
+
+          assert response == expected_response
+        end)
+
+      assert log =~ "[info] PATCH /api/parcel"
+      assert log =~ "[info] Sent 400"
+    end
+
+    test "returns error when parcel is already in transit", %{conn: conn} do
+      parcel = insert(:parcel, state: :in_transit)
+      params = string_params_for(:cancel_parcel_dto, parcel_id: parcel.id)
+      expected_response = %{"reason" => "parcel is already in transit"}
+
+      log =
+        capture_log(fn ->
+          response =
+            conn
+            |> patch(~p"/api/parcel/#{params["parcel_id"]}/cancel", params)
+            |> json_response(:bad_request)
+
+          assert response == expected_response
+        end)
+
+      assert log =~ "[info] PATCH /api/parcel"
+      assert log =~ "[info] Sent 400"
+    end
+
+    test "returns error when parcel is already delivered", %{conn: conn} do
+      parcel = insert(:parcel, state: :delivered, is_delivered: true)
+      params = string_params_for(:cancel_parcel_dto, parcel_id: parcel.id)
+      expected_response = %{"reason" => "parcel is already delivered"}
+
+      log =
+        capture_log(fn ->
+          response =
+            conn
+            |> patch(~p"/api/parcel/#{params["parcel_id"]}/cancel", params)
+            |> json_response(:bad_request)
+
+          assert response == expected_response
+        end)
+
+      assert log =~ "[info] PATCH /api/parcel"
+      assert log =~ "[info] Sent 400"
+    end
+
+    test "cancels parcel, persists reason & send cancellation email", %{conn: conn} do
+      parcel = insert(:parcel, state: :pending)
+      params = string_params_for(:cancel_parcel_dto, parcel_id: parcel.id)
+      expected_response = %{"data" => %{"id" => parcel.id}}
+
+      log =
+        capture_log(fn ->
+          response =
+            conn
+            |> patch(~p"/api/parcel/#{parcel.id}/cancel", params)
+            |> json_response(:ok)
+
+          assert response == expected_response
+
+          assert_enqueued(
+            worker: SenderWorker,
+            args: %{"message" => "Parcel is canceled sucessfully!"}
+          )
+        end)
+
+      assert log =~ "[info] PATCH /api/parcel"
+      assert log =~ "[info] Sent 200"
+    end
+  end
 end

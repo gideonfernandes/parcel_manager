@@ -8,10 +8,13 @@ defmodule ParcelManagerWeb.Router do
   scope "/api", ParcelManagerWeb do
     pipe_through :api
 
+    # Na minha perspectiva faria mais sentido utilizar uma rota patch.
     post "/parcel/:parcel_id/transfer", ParcelController, :transfer
+
     post "/parcel", ParcelController, :create
     get "/parcel/:parcel_id", ParcelController, :show
     get "/location/:location_id", LocationController, :show
+    patch "/parcel/:parcel_id/cancel", ParcelController, :cancel
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
