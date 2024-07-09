@@ -22,7 +22,7 @@ defmodule ParcelManager.Domain.Aggregates.Transfer do
 
   defp check_transferability(%Schemas.Parcel{} = parcel, %Schemas.Location{id: location_id}) do
     cond do
-      parcel.state == :delivered and parcel.is_delivered -> {:error, :already_delivered}
+      Entities.Parcel.delivered?(parcel) -> {:error, :already_delivered}
       current?(parcel, location_id) -> {:error, :cannot_be_transferred_to_current_location}
       returning?(parcel, location_id) -> {:error, :cannot_be_returned_to_previous_locations}
       true -> {:ok, true}

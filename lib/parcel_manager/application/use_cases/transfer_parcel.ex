@@ -19,7 +19,7 @@ defmodule ParcelManager.Application.UseCases.TransferParcel do
     |> Ecto.Multi.one(:parcel, &Entities.Parcel.with_transfers(&1.dto.parcel_id))
     |> Ecto.Multi.one(:location, &Entities.Location.by_id(&1.dto.transfer_location_id))
     |> Ecto.Multi.run(:transfer_parcel, &transfer_parcel/2)
-    |> Ecto.Multi.run(:sent_email, &maybe_send_email/2)
+    |> Ecto.Multi.run(:email, &maybe_send_email/2)
     |> Repo.transaction(telemetry_options: [name: :transfer_parcel_transaction])
     |> handle_result()
   end

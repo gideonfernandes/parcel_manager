@@ -3,6 +3,13 @@ defmodule ParcelManager.Infrastructure.Persistence.Queries.Parcel do
 
   use ParcelManager.Infrastructure.Persistence.Queries.Macro
 
+  @spec by_id(parcel_id :: Ecto.UUID.t()) :: Ecto.Query.t()
+  def by_id(parcel_id) do
+    Schemas.Parcel
+    |> from(as: :parcel)
+    |> by_id(parcel_id)
+  end
+
   @spec by_id(query :: Ecto.Queryable.t(), parcel_id :: Ecto.UUID.t()) :: Ecto.Query.t()
   def by_id(query, parcel_id) do
     where(query, [parcel: p], p.id == ^parcel_id)

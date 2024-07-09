@@ -77,6 +77,27 @@ defmodule ParcelManager.Infrastructure.Persistence.Schemas.ParcelTest do
       assert errors_on(changeset) == expected_result
     end
 
+    test "returns an invalid changeset when is cancelling without reason" do
+      source = insert(:location)
+      current = insert(:location)
+      destination = insert(:location)
+
+      attrs =
+        params_for(:parcel,
+          source: source,
+          current: current,
+          destination: destination,
+          state: :canceled
+        )
+
+      expected_result = %{reason: ["can't be blank"]}
+
+      changeset = Parcel.changeset(%Parcel{}, attrs)
+
+      refute changeset.valid?
+      assert errors_on(changeset) == expected_result
+    end
+
     test "returns a valid changeset when given the required attrs" do
       source = insert(:location)
       current = insert(:location)

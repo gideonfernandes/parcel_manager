@@ -35,4 +35,13 @@ defmodule ParcelManager.Infrastructure.Persistence.Repositories.ParcelRepository
     |> Schemas.Parcel.changeset(attrs)
     |> Repo.update(telemetry_options: [name: :update_parcel])
   end
+
+  @spec cancel(parcel :: Schemas.Parcel.t(), attrs :: map()) ::
+          {:ok, Schemas.Parcel.t()} | {:error, Ecto.Changeset.t()}
+  def cancel(parcel, attrs) do
+    parcel
+    |> Ecto.Changeset.change(state: :canceled)
+    |> Schemas.Parcel.changeset(attrs)
+    |> Repo.update(telemetry_options: [name: :cancel_parcel])
+  end
 end

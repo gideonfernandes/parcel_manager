@@ -15,6 +15,7 @@ defmodule ParcelManager.Application.UseCases.TransferParcelTest do
       log =
         capture_log(fn ->
           assert TransferParcel.call(dto) == expected_result
+          refute_enqueued(worker: SenderWorker)
         end)
 
       assert log =~
@@ -29,6 +30,7 @@ defmodule ParcelManager.Application.UseCases.TransferParcelTest do
       log =
         capture_log(fn ->
           assert TransferParcel.call(dto) == expected_result
+          refute_enqueued(worker: SenderWorker)
         end)
 
       assert log =~
@@ -64,6 +66,7 @@ defmodule ParcelManager.Application.UseCases.TransferParcelTest do
       log =
         capture_log(fn ->
           assert TransferParcel.call(dto) == expected_result
+          refute_enqueued(worker: SenderWorker)
         end)
 
       assert log =~
@@ -86,8 +89,7 @@ defmodule ParcelManager.Application.UseCases.TransferParcelTest do
           assert result.transfer_parcel.transfer.parcel_id == dto.parcel_id
           assert result.transfer_parcel.transfer.location_id == dto.transfer_location_id
           assert result.transfer_parcel.update_parcel.state == :in_transit
-          assert result.sent_email == :skipped
-
+          assert result.email == :skipped
           refute_enqueued(worker: SenderWorker)
         end)
 
@@ -113,7 +115,7 @@ defmodule ParcelManager.Application.UseCases.TransferParcelTest do
           assert result.transfer_parcel.update_parcel.id == dto.parcel_id
           assert result.transfer_parcel.update_parcel.is_delivered
           assert result.transfer_parcel.update_parcel.state == :delivered
-          assert %Oban.Job{} = result.sent_email
+          assert %Oban.Job{} = result.email
 
           assert_enqueued(
             worker: SenderWorker,

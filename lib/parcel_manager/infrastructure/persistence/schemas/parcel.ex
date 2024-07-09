@@ -42,6 +42,7 @@ defmodule ParcelManager.Infrastructure.Persistence.Schemas.Parcel do
     |> validate_required(@required)
     |> validate_inclusion(:state, @valid_states)
     |> validate_location_distinction()
+    |> validate_cancellation()
     |> foreign_key_constraint(:source_id)
     |> foreign_key_constraint(:current_id)
     |> foreign_key_constraint(:destination_id)
@@ -64,4 +65,15 @@ defmodule ParcelManager.Infrastructure.Persistence.Schemas.Parcel do
       []
     end
   end
+
+  defp validate_cancellation(%Changeset{valid?: true} = changeset) do
+    changeset
+    |> Changeset.get_change(:state)
+    |> then(&do_validate_cancellation(changeset, &1))
+  end
+
+  defp validate_cancellation(changeset), do: changeset
+
+  defp do_validate_cancellation(changeset, :canceled), do: validate_required(changeset, :reason)
+  defp do_validate_cancellation(changeset, _state), do: changeset
 end

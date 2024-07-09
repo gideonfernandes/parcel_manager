@@ -69,4 +69,12 @@ defmodule ParcelManager.Factory do
       transfer_location_id: Faker.UUID.v4()
     }
   end
+
+  @spec cancel_parcel_dto_factory :: map()
+  def cancel_parcel_dto_factory do
+    %Dtos.CancelParcel{
+      parcel_id: Faker.UUID.v4(),
+      reason: Faker.Lorem.word()
+    }
+  end
 end

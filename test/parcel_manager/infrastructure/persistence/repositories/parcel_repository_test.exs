@@ -136,4 +136,24 @@ defmodule ParcelManager.Infrastructure.Persistence.Repositories.ParcelRepository
       assert {:error, %Ecto.Changeset{}} = ParcelRepository.update(parcel, attrs)
     end
   end
+
+  describe "cancel/2" do
+    test "cancels a parcel" do
+      parcel = insert(:parcel)
+      attrs = %{reason: "reason"}
+
+      assert parcel.state == :in_transit
+      assert is_nil(parcel.reason)
+      assert {:ok, %Parcel{} = canceled_parcel} = ParcelRepository.cancel(parcel, attrs)
+      assert canceled_parcel.state == :canceled
+      assert canceled_parcel.reason == "reason"
+    end
+
+    test "returns error when unable to update" do
+      parcel = insert(:parcel)
+      attrs = %{state: :canceled}
+
+      assert {:error, %Ecto.Changeset{}} = ParcelRepository.cancel(parcel, attrs)
+    end
+  end
 end

@@ -3,7 +3,6 @@ defmodule ParcelManager.Application.UseCases.CreateParcel do
 
   use ParcelManager.Application.UseCases.Macro
 
-  alias ParcelManager.Application.Error
   alias ParcelManager.Infrastructure.Persistence.Schemas
 
   @type use_case_output :: {:ok, Schemas.Parcel.t()} | {:error, Error.t()}
