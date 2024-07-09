@@ -5,9 +5,8 @@ defmodule ParcelManager.Application.UseCases.CancelParcel do
 
   alias ParcelManager.Infrastructure.Mailer.Workers.SenderWorker
   alias ParcelManager.Infrastructure.Persistence.Repo
-  alias ParcelManager.Infrastructure.Persistence.Schemas
 
-  @type use_case_output :: {:ok, Schemas.Parcel.t()} | {:error, Error.t()}
+  @type use_case_output :: {:ok, map()} | {:error, Error.t()}
 
   @spec call(dto :: Dtos.CancelParcel.t()) :: use_case_output()
   def call(%Dtos.CancelParcel{} = dto) do
