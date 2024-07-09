@@ -3,21 +3,9 @@ defmodule ParcelManager.Infrastructure.Persistence.Repositories.ParcelRepository
 
   use ParcelManager.Infrastructure.Persistence.Repositories.Macro
 
-  @location_fields [:id, :name]
-  @transfers_fields [:inserted_at, :location_id, location: [:id, :name]]
-
-  @get_select_fields [
-    :id,
-    :description,
-    :is_delivered,
-    :source_id,
-    :destination_id,
-    :reason,
-    :state,
-    source: @location_fields,
-    transfers: @transfers_fields,
-    destination: @location_fields
-  ]
+  @location_fields ~w/id name/a
+  @parcel_fields ~w/id description is_delivered source_id destination_id reason state/a
+  @transfers_fields ~w/inserted_at location_id/a ++ [location: @location_fields]
 
   @spec get(parcel_id :: Ecto.UUID.t()) :: map() | nil
   def get(parcel_id) do
@@ -26,7 +14,10 @@ defmodule ParcelManager.Infrastructure.Persistence.Repositories.ParcelRepository
     |> Queries.Parcel.by_id(parcel_id)
     |> Queries.Parcel.with_source()
     |> Queries.Parcel.with_destination()
-    |> select([parcel: p], map(p, @get_select_fields))
+    |> select([parcel: p], map(p, @parcel_fields))
+    |> select_merge([parcel: p], map(p, source: @location_fields))
+    |> select_merge([parcel: p], map(p, transfers: @transfers_fields))
+    |> select_merge([parcel: p], map(p, destination: @location_fields))
     |> Repo.one(telemetry_options: [name: :get_parcel])
   end
 
