@@ -15,6 +15,8 @@ defmodule ParcelManager.Application.UseCases.GetLocation do
   end
 
   defp handle_result(nil) do
+    Logger.error("#{__MODULE__}.call #{inspect(:location_not_found)}")
+
     {:error, Error.build(:not_found, "location not found")}
   end
 

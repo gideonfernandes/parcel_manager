@@ -18,6 +18,7 @@ defmodule ParcelManager.Application.UseCases.GetParcelTest do
         end)
 
       assert log =~ "[info] #{GetParcel}.call parcel_id=#{dto.parcel_id}"
+      assert log =~ "[error] #{GetParcel}.call :parcel_not_found"
     end
 
     test "reads parcel data" do

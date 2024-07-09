@@ -18,6 +18,7 @@ defmodule ParcelManager.Application.UseCases.GetLocationTest do
         end)
 
       assert log =~ "[info] #{GetLocation}.call location_id=#{dto.location_id}"
+      assert log =~ "[error] #{GetLocation}.call :location_not_found"
     end
 
     test "reads location data" do

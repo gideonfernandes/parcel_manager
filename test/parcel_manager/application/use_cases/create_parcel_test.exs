@@ -19,6 +19,8 @@ defmodule ParcelManager.Application.UseCases.CreateParcelTest do
 
       assert log =~
                "[info] #{CreateParcel}.call source_id=#{dto.source_id} destination_id=#{dto.destination_id}"
+
+      assert log =~ "[error] #{CreateParcel}.call changeset_errors="
     end
 
     test "creates a parcel" do

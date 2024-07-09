@@ -19,6 +19,7 @@ defmodule ParcelManager.Application.UseCases.CancelParcelTest do
         end)
 
       assert log =~ "[info] #{CancelParcel}.call parcel_id=#{dto.parcel_id}"
+      assert log =~ "[error] #{CancelParcel}.call :parcel_not_found"
     end
 
     test "returns error when parcel is already canceled" do
@@ -35,6 +36,7 @@ defmodule ParcelManager.Application.UseCases.CancelParcelTest do
         end)
 
       assert log =~ "[info] #{CancelParcel}.call parcel_id=#{dto.parcel_id}"
+      assert log =~ "[error] #{CancelParcel}.call :already_canceled"
     end
 
     test "returns error when parcel is already in transit" do
@@ -51,6 +53,7 @@ defmodule ParcelManager.Application.UseCases.CancelParcelTest do
         end)
 
       assert log =~ "[info] #{CancelParcel}.call parcel_id=#{dto.parcel_id}"
+      assert log =~ "[error] #{CancelParcel}.call :already_in_transit"
     end
 
     test "returns error when parcel is already delivered" do
@@ -67,6 +70,7 @@ defmodule ParcelManager.Application.UseCases.CancelParcelTest do
         end)
 
       assert log =~ "[info] #{CancelParcel}.call parcel_id=#{dto.parcel_id}"
+      assert log =~ "[error] #{CancelParcel}.call :already_delivered"
     end
 
     test "cancels parcel, persists reason & send cancellation email" do

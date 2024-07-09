@@ -28,6 +28,19 @@ defmodule ParcelManager.Domain.Aggregates.TransferTest do
       assert Transfer.transfer_parcel(parcel_with_transfers, location) == expected_result
     end
 
+    test "returns error when parcel is transfering to current location" do
+      location = insert(:location)
+      parcel = insert(:parcel, current: location, current_id: location.id)
+      expected_result = {:error, :cannot_be_transferred_to_current_location}
+
+      parcel_with_transfers =
+        Schemas.Parcel
+        |> Repo.get!(parcel.id)
+        |> Repo.preload(:transfers)
+
+      assert Transfer.transfer_parcel(parcel_with_transfers, location) == expected_result
+    end
+
     test "returns error when parcel is returning to source" do
       location = insert(:location)
       insert(:parcel, source_id: location.id, source: location)

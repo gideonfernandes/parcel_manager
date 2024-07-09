@@ -43,27 +43,39 @@ defmodule ParcelManager.Application.UseCases.TransferParcel do
 
   defp handle_result({:ok, result}), do: {:ok, result}
 
-  defp handle_result({:error, _, :parcel_not_found, _}) do
-    {:error, Error.build(:not_found, "parcel not found")}
+  defp handle_result({:error, _, %Ecto.Changeset{} = changeset, _}) do
+    Logger.error("#{__MODULE__}.call changeset_errors=#{inspect(changeset.errors)}")
+
+    handle_result({:error, changeset})
   end
 
-  defp handle_result({:error, _, :location_not_found, _}) do
-    {:error, Error.build(:not_found, "location not found")}
-  end
+  defp handle_result({:error, _, reason, _}) do
+    Logger.error("#{__MODULE__}.call #{inspect(reason)}")
 
-  defp handle_result({:error, _, :already_delivered, _}) do
-    {:error, Error.build(:bad_request, "parcel is already delivered")}
-  end
-
-  defp handle_result({:error, _, :cannot_be_transferred_to_current_location, _}) do
-    {:error, Error.build(:bad_request, "parcel cannot be transferred to current location")}
-  end
-
-  defp handle_result({:error, _, :cannot_be_returned_to_previous_locations, _}) do
-    {:error, Error.build(:bad_request, "parcel cannot be returned to previous locations")}
+    handle_result({:error, reason})
   end
 
   defp handle_result({:error, %Ecto.Changeset{} = changeset}) do
     {:error, Error.build(:bad_request, changeset)}
+  end
+
+  defp handle_result({:error, :parcel_not_found}) do
+    {:error, Error.build(:not_found, "parcel not found")}
+  end
+
+  defp handle_result({:error, :location_not_found}) do
+    {:error, Error.build(:not_found, "location not found")}
+  end
+
+  defp handle_result({:error, :already_delivered}) do
+    {:error, Error.build(:bad_request, "parcel is already delivered")}
+  end
+
+  defp handle_result({:error, :cannot_be_transferred_to_current_location}) do
+    {:error, Error.build(:bad_request, "parcel cannot be transferred to current location")}
+  end
+
+  defp handle_result({:error, :cannot_be_returned_to_previous_locations}) do
+    {:error, Error.build(:bad_request, "parcel cannot be returned to previous locations")}
   end
 end

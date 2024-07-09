@@ -23,6 +23,8 @@ defmodule ParcelManager.Application.UseCases.CreateParcel do
   defp handle_result({:ok, parcel}), do: {:ok, parcel}
 
   defp handle_result({:error, %Ecto.Changeset{} = changeset}) do
+    Logger.error("#{__MODULE__}.call changeset_errors=#{inspect(changeset.errors)}")
+
     {:error, Error.build(:bad_request, changeset)}
   end
 end

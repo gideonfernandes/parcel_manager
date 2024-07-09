@@ -38,23 +38,35 @@ defmodule ParcelManager.Application.UseCases.CancelParcel do
 
   defp handle_result({:ok, result}), do: {:ok, result}
 
-  defp handle_result({:error, _, :parcel_not_found, _}) do
-    {:error, Error.build(:not_found, "parcel not found")}
+  defp handle_result({:error, _, %Ecto.Changeset{} = changeset, _}) do
+    Logger.error("#{__MODULE__}.call changeset_errors=#{inspect(changeset.errors)}")
+
+    handle_result({:error, changeset})
   end
 
-  defp handle_result({:error, _, :already_canceled, _}) do
-    {:error, Error.build(:bad_request, "parcel is already canceled")}
-  end
+  defp handle_result({:error, _, reason, _}) do
+    Logger.error("#{__MODULE__}.call #{inspect(reason)}")
 
-  defp handle_result({:error, _, :already_in_transit, _}) do
-    {:error, Error.build(:bad_request, "parcel is already in transit")}
-  end
-
-  defp handle_result({:error, _, :already_delivered, _}) do
-    {:error, Error.build(:bad_request, "parcel is already delivered")}
+    handle_result({:error, reason})
   end
 
   defp handle_result({:error, %Ecto.Changeset{} = changeset}) do
     {:error, Error.build(:bad_request, changeset)}
+  end
+
+  defp handle_result({:error, :parcel_not_found}) do
+    {:error, Error.build(:not_found, "parcel not found")}
+  end
+
+  defp handle_result({:error, :already_canceled}) do
+    {:error, Error.build(:bad_request, "parcel is already canceled")}
+  end
+
+  defp handle_result({:error, :already_in_transit}) do
+    {:error, Error.build(:bad_request, "parcel is already in transit")}
+  end
+
+  defp handle_result({:error, :already_delivered}) do
+    {:error, Error.build(:bad_request, "parcel is already delivered")}
   end
 end

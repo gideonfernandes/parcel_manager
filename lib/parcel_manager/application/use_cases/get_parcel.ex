@@ -15,6 +15,8 @@ defmodule ParcelManager.Application.UseCases.GetParcel do
   end
 
   defp handle_result(nil) do
+    Logger.error("#{__MODULE__}.call #{inspect(:parcel_not_found)}")
+
     {:error, Error.build(:not_found, "parcel not found")}
   end
 
