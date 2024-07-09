@@ -75,11 +75,6 @@ $ mix phx.server
 
 
 ## Endpoints
-A API JSON deverá conter os seguintes endpoints:
-
-> Aviso!
-> Os JSONs de exemplo são apenas uma sugestão, você está livre para retornar os dados da forma que achar melhor
-> desde que siga as regras definidas pelos endpoints.
 
 ### Create Parcel
 Endpoint para criação de encomendas:
@@ -97,8 +92,8 @@ Exemplo de JSON de criação
 
 ### Get Parcel
 Endpoint para pegar informações de um `parcel`, retornando também as `locations` pelas quais o `parcel` passou.
-As `locations` devem ser retornadas em **ordem de movimentação**, por exemplo, se um `parcel` passou pela
-`Location A` e depois pela `Location B`, o retorno deverá ser: 
+As `locations` são retornadas em **ordem de movimentação**, por exemplo, se um `parcel` passou pela
+`Location A` e depois pela `Location B`, o retorno será: 
 ```json
 [
     {"id": "<location-id>", "name": "Location A"},
@@ -130,7 +125,7 @@ Exemplo de retorno JSON
 ```
 
 ### Transfer parcel
-Endpoint para transferir um `parcel` para uma `location`. Esse endpoint deve apenas receber o `id` 
+Endpoint para transferir um `parcel` para uma `location`. Esse endpoint recebe o `id` 
 do `parcel` (definido no caminho do endpoint) e o `id` da `location` de transferência.
 
 Caminho: `/api/parcel/<parcel-id>/transfer`
@@ -166,6 +161,19 @@ Método: `GET`
             }
         }
     ]
+}
+```
+
+### Cancel parcel
+Endpoint para cancelar um `parcel`. Esse endpoint recebe o `id` 
+do `parcel` (definido no caminho do endpoint) e um `reason` com o motivo do cancelamento.
+
+Caminho: `/api/parcel/<parcel-id>/cancel`
+Método: `PATCH`
+Exemplo de JSON de criação
+```json
+{
+    "reason": "motivo"
 }
 ```
 

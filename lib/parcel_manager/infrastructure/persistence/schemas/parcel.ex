@@ -23,9 +23,12 @@ defmodule ParcelManager.Infrastructure.Persistence.Schemas.Parcel do
 
   schema "parcels" do
     field(:description, :string)
-    field(:is_delivered, :boolean, default: false)
     field(:state, Ecto.Enum, values: @valid_states)
     field(:reason, :string)
+
+    # Apesar de podermos utilizar o state para saber se o pacote foi entregue,
+    # optei por manter esse campo dado que é um campo obrigatório na descrição do desafio.
+    field(:is_delivered, :boolean, default: false)
 
     belongs_to(:source, Schemas.Location)
     belongs_to(:current, Schemas.Location)
