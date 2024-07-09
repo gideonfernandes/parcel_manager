@@ -11,6 +11,6 @@ defmodule ParcelManagerWeb.FallbackController do
     conn
     |> put_status(status)
     |> put_view(ErrorJSON)
-    |> render("error.json", result: result)
+    |> render(:error, result: result)
   end
 end
